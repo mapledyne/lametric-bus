@@ -2,9 +2,12 @@ from bs4 import BeautifulSoup
 import requests
 import time
 
+placeholder_time = 100
+
 oba_url = "http://pugetsound.onebusaway.org/where/sign/stop.action?id=1_"
 
-stops = [["27", "27360", 100, ""], ["14", "11920", 100, ""]]
+stops = [["27", "27360", placeholder_time, ""],
+         ["14", "11920", placeholder_time, ""]]
 
 
 def _get(url):
@@ -20,6 +23,7 @@ def bus(bus_stop):
 def buses():
     for one_stop in stops:
         web_body = bus(one_stop[1])
+        one_stop[2] = placeholder_time
         soup = BeautifulSoup(web_body, 'html.parser')
         for one_bus in soup.findAll("td", class_="arrivalsStatusEntry"):
             timing = one_bus.string
@@ -32,7 +36,7 @@ def buses():
                 one_stop[2] = timing
 
         for one_stop in stops:
-            if one_stop[2] == 100:
+            if one_stop[2] == placeholder_time:
                 one_stop[3] = str(one_stop[0]) + ": --m"
             else:
                 one_stop[3] = str(one_stop[0]) + ": " + str(one_stop[2]) + "m"
