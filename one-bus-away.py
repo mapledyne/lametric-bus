@@ -38,6 +38,7 @@ def buses():
                 one_stop[3] = str(one_stop[0]) + ": " + str(one_stop[2]) + "m"
 #            print one_stop[0] + ": " + str(timing) + "m"
 
+
 def update_lametric():
     buses()
     print("Stops: " + str(stops))
@@ -52,7 +53,9 @@ def update_lametric():
 
     url = "https://developer.lametric.com/api/V1/dev/widget/update/com.lametric.e67bc58361aff696eced83d28d0aae32/1"
 
-    requests.post(url, headers=headerset, data=frames)
+    r = requests.post(url, headers=headerset, data=frames)
+    print('Post status code: ' + str(r.status_code))
+    print('Post return text: ' + r.text)
 
 if __name__ == '__main__':
     while True:
